@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "558593875694",
+    "project_id": "flutfire-crud",
+    "storage_bucket": "flutfire-crud.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558593875694:android:43fb96574f877ae829ddff",
+        "android_client_info": {
+          "package_name": "com.example.flutfire_crud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "558593875694-marq27eko1s9cgtodom37f6424luc173.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_RuQ25FwbiZtBa3NCcMcro-wyNpcVyPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558593875694-marq27eko1s9cgtodom37f6424luc173.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
