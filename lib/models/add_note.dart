@@ -3,7 +3,8 @@ import 'package:flutfire_crud/models/note.dart';
 import 'package:flutter/material.dart';
 
 class AddNote extends StatefulWidget {
-  const AddNote({Key? key}) : super(key: key);
+  final Note? note;
+  const AddNote({Key? key, this.note}) : super(key: key);
 
   @override
   _AddNoteState createState() => _AddNoteState();
@@ -15,12 +16,20 @@ class _AddNoteState extends State<AddNote> {
   TextEditingController? _titleController;
   TextEditingController? _descController;
 
+  FocusNode? _titlefocus;
+  FocusNode? _descfocus;
+
+  get isEditMode => widget.note != null;
+
   @override
   void initState() {
-    // TODO: implement initState
+    _titleController =
+        TextEditingController(text: isEditMode ? widget.note!.title : '');
+    _descController =
+        TextEditingController(text: isEditMode ? widget.note!.desc : '');
 
-    _titleController = TextEditingController(text: '');
-    _descController = TextEditingController(text: '');
+    _titlefocus = FocusNode();
+    _descfocus = FocusNode();
 
     super.initState();
   }
@@ -29,7 +38,7 @@ class _AddNoteState extends State<AddNote> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Note"),
+        title: Text(isEditMode ? "Edit Note" : "Add Note"),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
@@ -39,7 +48,9 @@ class _AddNoteState extends State<AddNote> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
+                focusNode: _titlefocus,
                 controller: _titleController,
+                onEditingComplete: () => _descfocus!.requestFocus(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return ("Title cannot be empty");
@@ -54,6 +65,7 @@ class _AddNoteState extends State<AddNote> {
                 height: 10,
               ),
               TextFormField(
+                focusNode: _descfocus,
                 controller: _descController,
                 maxLines: 4,
                 decoration: InputDecoration(
@@ -66,19 +78,31 @@ class _AddNoteState extends State<AddNote> {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    if (key.currentState!.validate()) {  //checking validity
+                    if (key.currentState!.validate()) {
+                      //checking validity
                       try {
-                        await FireStoreService().addNote(Note(
-                          title: _titleController!.text,
-                          desc: _descController!.text,
-                        ));
-                        Navigator.pop(context);
+                        if (isEditMode) {
+                          Note note = Note(
+                            title: _titleController!.text,
+                            desc: _descController!.text,
+                            id: widget.note!.id,
+                          );
+                          await FireStoreService().updateNote(note);
+                          Navigator.pop(context);
+                        } else {
+                          Note note = Note(
+                            title: _titleController!.text,
+                            desc: _descController!.text,
+                          );
+                          await FireStoreService().addNote(note);
+                          Navigator.pop(context);
+                        }
                       } catch (e) {
                         print(e);
                       }
                     }
                   },
-                  child: Text("Ok"))
+                  child: Text(isEditMode ? "Update" : "Save"))
             ],
           ),
         ),
