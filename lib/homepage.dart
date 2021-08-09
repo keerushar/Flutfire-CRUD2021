@@ -1,4 +1,5 @@
 import 'package:flutfire_crud/data/firestore_service.dart';
+import 'package:flutfire_crud/note_details.dart';
 import 'package:flutter/material.dart';
 
 import 'models/note.dart';
@@ -13,8 +14,9 @@ class HomePage extends StatelessWidget {
       body: StreamBuilder(
         stream: FireStoreService().getNotes(),
         builder: (context, AsyncSnapshot<List<Note>> snapshot) {
-          if (snapshot.hasError || !snapshot.hasData)
+          if (snapshot.hasError || !snapshot.hasData) 
             return CircularProgressIndicator();
+          
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, int index) {
@@ -22,6 +24,11 @@ class HomePage extends StatelessWidget {
               return ListTile(
                 title: Text("${note.title}"),
                 subtitle: Text("${note.desc}"),
+                onTap: () => Navigator.push(
+                  context, MaterialPageRoute(
+                  builder:(_) => NoteDetails(note: note),
+                ),
+                ),
               );
             },
           );
