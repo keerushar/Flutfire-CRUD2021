@@ -1,4 +1,5 @@
 import 'package:flutfire_crud/data/firestore_service.dart';
+import 'package:flutfire_crud/models/add_note.dart';
 import 'package:flutfire_crud/note_details.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +34,10 @@ class HomePage extends StatelessWidget {
             },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (_) => AddNote())),
       ),
     );
   }

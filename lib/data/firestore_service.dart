@@ -21,4 +21,8 @@ class FireStoreService {
               .toList(),
         );
   }
+
+  Future<void> addNote(Note note) {
+    return _db.collection("notes").add(note.toMap());
+  }
 }
