@@ -31,8 +31,10 @@ class HomePage extends StatelessWidget {
                     IconButton(
                       color: Colors.blue,
                       icon: Icon(Icons.edit),
-                      onPressed: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => AddNote(note:note))),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => AddNote(note: note))),
                     ),
                     IconButton(
                       color: Colors.red,
@@ -61,32 +63,34 @@ class HomePage extends StatelessWidget {
   }
 
   void _deleteNote(BuildContext context, String id) async {
-    // if(await _showConfirmationDialog(context)) {
-    try {
-      await FireStoreService().deleteNote(id);
-    } catch (e) {
-      print(e);
+    final _isDelete = await _showConfirmationDialog(context) ?? false;
+    if (_isDelete) {
+      print("connected");
+      try {
+        await FireStoreService().deleteNote(id);
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
-  // Future<bool> _showConfirmationDialog(BuildContext context) async {
-  //    return showDialog(
-  //     context: context,
-  //     barrierDismissible: true,
-  //     builder: (context) => AlertDialog(
-  //       content: Text("Are you Sure??"),
-  //       actions: [
-  //         ElevatedButton(
-  //           child: Text("Delete"),
-  //           onPressed: () => Navigator.pop(context, true),
-
-  //         ),
-  //         ElevatedButton(
-  //           onPressed: () => Navigator.pop(context, false),
-  //           child: Text("Cancel"),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
+  Future<bool?> _showConfirmationDialog(BuildContext context) async {
+    return showDialog<bool?>(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => AlertDialog(
+        content: Text("Are you Sure??"),
+        actions: [
+          ElevatedButton(
+            child: Text("Delete"),
+            onPressed: () => Navigator.pop(context, true),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text("Cancel"),
+          )
+        ],
+      ),
+    );
+  }
 }

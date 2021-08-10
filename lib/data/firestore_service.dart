@@ -14,11 +14,7 @@ class FireStoreService {
 
   Stream<List<Note>> getNotes() {
     return _db.collection('notes').snapshots().map(
-          (snapshot) => snapshot.docs
-              .map(
-                (doc) => Note.fromMap(doc.data(), doc.id),
-              )
-              .toList(),
+          (snapshot) => snapshot.docs.map((doc) => Note.fromMap(doc.data(), doc.id),).toList(),
         );
   }
 
